@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.22'
+    id 'groovy'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://jitpack.io' }
+    maven { url = 'https://maven.brott.dev/' }
+}
+
+dependencies {
+    implementation 'org.apache.groovy:groovy:4.0.15'
+    implementation 'org.apache.groovy:groovy-all:4.0.15'
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation 'org.reflections:reflections:0.10.2'
+    implementation 'org.dom4j:dom4j:2.1.4'
+    implementation 'com.github.rh-robotics:MeepMeep:v1.0.0'
+
+
+
+
+    testImplementation 'junit:junit:4.13.2'
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "21"
+    }
+}
+
+tasks.register('reflections') {
+    dependsOn classes
+}
+
+jar {
+    dependsOn tasks.named('reflections')
+}
